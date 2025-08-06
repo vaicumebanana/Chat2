@@ -3,46 +3,107 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chat Elegante</title>
+    <title>Chat Educacional</title>
     <style>
         :root {
-            --primary-color: #4361ee;
-            --secondary-color: #3a0ca3;
-            --background-color: #f8f9fa;
-            --message-bg: #ffffff;
-            --user-message-bg: #e3f2fd;
-            --text-color: #333333;
-            --timestamp-color: #777777;
+            --primary: #4361ee;
+            --secondary: #3f37c9;
+            --light: #f8f9fa;
+            --dark: #212529;
+            --success: #4cc9f0;
+            --warning: #f72585;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: var(--background-color);
-            margin: 0;
-            padding: 0;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
-            min-height: 100vh;
-            color: var(--text-color);
         }
 
+        /* Tela de Login */
+        .login-container {
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .login-container h1 {
+            color: var(--primary);
+            margin-bottom: 1.5rem;
+            font-size: 1.8rem;
+        }
+
+        .login-form input {
+            width: 100%;
+            padding: 12px 15px;
+            margin-bottom: 1rem;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border 0.3s;
+        }
+
+        .login-form input:focus {
+            border-color: var(--primary);
+            outline: none;
+        }
+
+        .login-form button {
+            width: 100%;
+            padding: 12px;
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .login-form button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(67, 97, 238, 0.3);
+        }
+
+        .error-message {
+            color: var(--warning);
+            margin-top: 1rem;
+            font-size: 0.9rem;
+            display: none;
+        }
+
+        /* Tela do Chat */
         .chat-container {
+            display: none;
+            background: white;
             width: 100%;
             max-width: 800px;
             height: 90vh;
-            background-color: white;
             border-radius: 15px;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
-            display: flex;
-            flex-direction: column;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
             overflow: hidden;
+            flex-direction: column;
         }
 
         .chat-header {
-            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            background: linear-gradient(to right, var(--primary), var(--secondary));
             color: white;
-            padding: 15px 20px;
+            padding: 1rem;
             text-align: center;
             font-size: 1.5rem;
             font-weight: bold;
@@ -50,40 +111,39 @@
 
         .chat-messages {
             flex: 1;
-            padding: 20px;
+            padding: 1.5rem;
             overflow-y: auto;
-            background-color: var(--background-color);
+            background-color: #f8f9fa;
         }
 
         .message {
             max-width: 70%;
-            margin-bottom: 15px;
-            padding: 12px 15px;
-            border-radius: 18px;
+            margin-bottom: 1rem;
+            padding: 0.8rem 1rem;
+            border-radius: 12px;
             position: relative;
             word-wrap: break-word;
             animation: fadeIn 0.3s ease-out;
         }
 
         .received {
-            background-color: var(--message-bg);
+            background-color: white;
             align-self: flex-start;
-            border-bottom-left-radius: 5px;
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
         }
 
         .sent {
-            background-color: var(--user-message-bg);
+            background-color: #e3f2fd;
             align-self: flex-end;
-            border-bottom-right-radius: 5px;
             margin-left: auto;
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
         }
 
         .message-sender {
             font-weight: bold;
-            margin-bottom: 5px;
+            margin-bottom: 0.3rem;
             font-size: 0.9rem;
+            color: var(--primary);
         }
 
         .message-text {
@@ -93,39 +153,39 @@
 
         .message-time {
             font-size: 0.7rem;
-            color: var(--timestamp-color);
+            color: #6c757d;
             text-align: right;
-            margin-top: 5px;
+            margin-top: 0.3rem;
         }
 
         .chat-input-container {
             display: flex;
-            padding: 15px;
+            padding: 1rem;
             background-color: white;
-            border-top: 1px solid #eee;
+            border-top: 1px solid #e9ecef;
         }
 
         #message-input {
             flex: 1;
-            padding: 12px 15px;
-            border: 1px solid #ddd;
-            border-radius: 25px;
+            padding: 0.8rem 1rem;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
             font-size: 1rem;
-            outline: none;
             transition: border 0.3s;
         }
 
         #message-input:focus {
-            border-color: var(--primary-color);
+            border-color: var(--primary);
+            outline: none;
         }
 
         #send-button {
-            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            background: linear-gradient(to right, var(--primary), var(--secondary));
             color: white;
             border: none;
-            border-radius: 25px;
-            padding: 0 25px;
-            margin-left: 10px;
+            border-radius: 8px;
+            padding: 0 1.5rem;
+            margin-left: 0.5rem;
             cursor: pointer;
             font-size: 1rem;
             font-weight: bold;
@@ -134,39 +194,20 @@
 
         #send-button:hover {
             transform: translateY(-2px);
-            box-shadow: 0 4px 8px rgba(67, 97, 238, 0.2);
+            box-shadow: 0 5px 15px rgba(67, 97, 238, 0.3);
         }
 
         .status-bar {
             text-align: center;
-            padding: 8px;
+            padding: 0.5rem;
             font-size: 0.8rem;
-            color: var(--timestamp-color);
+            color: #6c757d;
             background-color: rgba(0, 0, 0, 0.02);
         }
 
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(10px); }
             to { opacity: 1; transform: translateY(0); }
-        }
-
-        /* Scrollbar personalizada */
-        .chat-messages::-webkit-scrollbar {
-            width: 8px;
-        }
-
-        .chat-messages::-webkit-scrollbar-track {
-            background: #f1f1f1;
-            border-radius: 10px;
-        }
-
-        .chat-messages::-webkit-scrollbar-thumb {
-            background: #ccc;
-            border-radius: 10px;
-        }
-
-        .chat-messages::-webkit-scrollbar-thumb:hover {
-            background: #aaa;
         }
 
         /* Responsividade */
@@ -183,12 +224,24 @@
     </style>
 </head>
 <body>
-    <div class="chat-container">
+    <!-- Tela de Login -->
+    <div class="login-container" id="login-container">
+        <h1>Chat Educacional</h1>
+        <form class="login-form" id="login-form">
+            <input type="text" id="login" placeholder="Login" required>
+            <input type="password" id="password" placeholder="Senha" required>
+            <button type="submit">Entrar</button>
+            <div class="error-message" id="error-message">Credenciais incorretas!</div>
+        </form>
+    </div>
+
+    <!-- Tela do Chat -->
+    <div class="chat-container" id="chat-container">
         <div class="chat-header">
-            Chat Elegante
+            Chat Público
         </div>
         <div class="status-bar" id="status">
-            Conectado • 1 mensagem
+            Conectado como <span id="username-display"></span> • <span id="message-count">0</span>/500 mensagens
         </div>
         <div class="chat-messages" id="chat-messages"></div>
         <div class="chat-input-container">
@@ -198,42 +251,91 @@
     </div>
 
     <script>
-        // Configurações
+        // Credenciais fixas
+        const FIXED_LOGIN = "Escola";
+        const FIXED_PASSWORD = "SenhaLegal";
+        
+        // Configurações do chat
         const MAX_MESSAGES = 500;
-        const STORAGE_KEY = 'elegant_chat_messages';
+        const STORAGE_KEY = 'educacional_chat_messages';
         
         // Elementos DOM
+        const loginContainer = document.getElementById('login-container');
+        const chatContainer = document.getElementById('chat-container');
+        const loginForm = document.getElementById('login-form');
+        const errorMessage = document.getElementById('error-message');
         const chatMessages = document.getElementById('chat-messages');
         const messageInput = document.getElementById('message-input');
         const sendButton = document.getElementById('send-button');
+        const usernameDisplay = document.getElementById('username-display');
+        const messageCount = document.getElementById('message-count');
         const statusBar = document.getElementById('status');
         
         // Estado do chat
-        let userName = localStorage.getItem('chat_username') || '';
-        let messages = loadMessages();
+        let userName = '';
+        let messages = [];
         
         // Inicialização
-        if (!userName) {
-            userName = prompt("Qual é o seu nome?") || "Anônimo";
-            localStorage.setItem('chat_username', userName);
+        loginForm.addEventListener('submit', handleLogin);
+        
+        function handleLogin(e) {
+            e.preventDefault();
+            
+            const login = document.getElementById('login').value;
+            const password = document.getElementById('password').value;
+            
+            if (login === FIXED_LOGIN && password === FIXED_PASSWORD) {
+                userName = prompt("Como você quer ser chamado no chat?") || "Usuário";
+                usernameDisplay.textContent = userName;
+                
+                // Carrega mensagens existentes
+                messages = JSON.parse(localStorage.getItem(STORAGE_KEY) || [];
+                updateMessageCount();
+                
+                // Mostra o chat e esconde o login
+                loginContainer.style.display = 'none';
+                chatContainer.style.display = 'flex';
+                
+                // Renderiza mensagens existentes
+                renderMessages();
+                
+                // Configura listeners do chat
+                setupChatListeners();
+            } else {
+                errorMessage.style.display = 'block';
+            }
         }
         
-        renderMessages();
-        setupEventListeners();
-        updateStatus();
-        
-        // Funções principais
-        function loadMessages() {
-            const saved = localStorage.getItem(STORAGE_KEY);
-            return saved ? JSON.parse(saved) : [];
+        function setupChatListeners() {
+            // Enviar mensagem ao clicar no botão
+            sendButton.addEventListener('click', sendMessage);
+            
+            // Enviar mensagem ao pressionar Enter
+            messageInput.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') {
+                    sendMessage();
+                }
+            });
+            
+            // Sincronização entre abas usando BroadcastChannel
+            const chatChannel = new BroadcastChannel('educacional_chat');
+            
+            chatChannel.addEventListener('message', (event) => {
+                if (event.data.type === 'new_message') {
+                    addMessage(event.data.message, false);
+                }
+            });
+            
+            // Limpeza ao sair
+            window.addEventListener('beforeunload', () => {
+                chatChannel.postMessage({ type: 'user_left', user: userName });
+            });
         }
         
-        function saveMessages() {
-            localStorage.setItem(STORAGE_KEY, JSON.stringify(messages));
-            updateStatus();
-        }
-        
-        function addMessage(text) {
+        function sendMessage() {
+            const text = messageInput.value.trim();
+            if (!text) return;
+            
             const newMessage = {
                 id: Date.now(),
                 sender: userName,
@@ -242,63 +344,73 @@
                 isCurrentUser: true
             };
             
-            messages.push(newMessage);
+            // Adiciona localmente
+            addMessage(newMessage, true);
             
-            // Limpar mensagens se atingir o limite
+            // Transmite para outras abas
+            const chatChannel = new BroadcastChannel('educacional_chat');
+            chatChannel.postMessage({
+                type: 'new_message',
+                message: newMessage
+            });
+            
+            // Limpa o input
+            messageInput.value = '';
+        }
+        
+        function addMessage(message, isCurrentUser) {
+            messages.push(message);
+            
+            // Verifica limite de mensagens
             if (messages.length > MAX_MESSAGES) {
-                messages = [newMessage]; // Começa de novo mantendo a última mensagem
+                messages = messages.slice(-MAX_MESSAGES);
                 showSystemMessage("O chat foi reiniciado após atingir 500 mensagens");
             }
             
-            saveMessages();
-            renderMessages();
+            // Salva no localStorage
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(messages));
+            updateMessageCount();
+            
+            // Renderiza
+            renderMessage(message, isCurrentUser);
         }
         
         function renderMessages() {
             chatMessages.innerHTML = '';
             messages.forEach(msg => {
-                const messageDiv = document.createElement('div');
-                messageDiv.className = `message ${msg.isCurrentUser ? 'sent' : 'received'}`;
-                messageDiv.innerHTML = `
-                    <div class="message-sender">${msg.sender}</div>
-                    <div class="message-text">${msg.text}</div>
-                    <div class="message-time">${msg.time}</div>
-                `;
-                chatMessages.appendChild(messageDiv);
+                renderMessage(msg, msg.isCurrentUser);
             });
-            chatMessages.scrollTop = chatMessages.scrollHeight;
+            scrollToBottom();
+        }
+        
+        function renderMessage(message, isCurrentUser) {
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${isCurrentUser ? 'sent' : 'received'}`;
+            messageDiv.innerHTML = `
+                <div class="message-sender">${message.sender}</div>
+                <div class="message-text">${message.text}</div>
+                <div class="message-time">${message.time}</div>
+            `;
+            chatMessages.appendChild(messageDiv);
+            scrollToBottom();
         }
         
         function showSystemMessage(text) {
             const systemMsg = document.createElement('div');
-            systemMsg.className = 'message';
             systemMsg.style.textAlign = 'center';
-            systemMsg.style.backgroundColor = 'transparent';
-            systemMsg.style.color = '#666';
+            systemMsg.style.color = '#6c757d';
             systemMsg.style.fontSize = '0.9rem';
-            systemMsg.style.padding = '5px 0';
+            systemMsg.style.padding = '0.5rem 0';
             systemMsg.textContent = text;
             chatMessages.appendChild(systemMsg);
         }
         
-        function updateStatus() {
-            statusBar.textContent = `Conectado como ${userName} • ${messages.length}/${MAX_MESSAGES} mensagens`;
+        function updateMessageCount() {
+            messageCount.textContent = messages.length;
         }
         
-        function setupEventListeners() {
-            sendButton.addEventListener('click', () => {
-                const text = messageInput.value.trim();
-                if (text) {
-                    addMessage(text);
-                    messageInput.value = '';
-                }
-            });
-            
-            messageInput.addEventListener('keypress', (e) => {
-                if (e.key === 'Enter') {
-                    sendButton.click();
-                }
-            });
+        function scrollToBottom() {
+            chatMessages.scrollTop = chatMessages.scrollHeight;
         }
     </script>
 </body>
